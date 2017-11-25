@@ -1,0 +1,85 @@
+<!--070117 nramiscal@gmail.com-->
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Test Pokedex</title>
+    <link rel="stylesheet" href="style.css">
+    <script type = "text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type = "text/javascript">
+
+
+        $(document).ready(function(){
+
+            var ID;
+            var imgString;
+            var json;
+
+            for (var i = 1; i <= 151; i++){
+                $(".pokemon").append('<img id="' + i + '" src="http://pokeapi.co/media/img/' + i + '.png">');
+            }
+
+
+
+            $('img').click(function(){
+                ID = $(this).attr('id');
+                console.log(ID);
+                imgString = '<img id="' + ID + '" src="http://pokeapi.co/media/img/' + ID + '.png">';
+                console.log(imgString);
+
+
+            $.get("https://pokeapi.co/api/v2/pokemon/" + ID + "/", function(res) {
+                var nameString = "";
+                nameString += "<h1>" + res.name + "</h1>";
+                $('.name').html(nameString);
+                $('.picture').html(imgString);
+            }, 'json');
+
+            $.get("https://pokeapi.co/api/v2/pokemon/" + ID + "/", function(res) {
+
+                var types = "<h3>Types</h3><ul>";
+                for(var i = 0; i < res.types.length; i++) {
+                    types += "<li>" + res.types[i]["type"].name + "</li>";
+                }
+                types += "</ul>";
+                $(".types").html(types);
+            }, 'json');
+
+            $.get("https://pokeapi.co/api/v2/pokemon/" + ID + "/", function(res) {
+                var heightString = "<h3>Height</h3>";
+                heightString += res.height;
+                $('.height').html(heightString);
+            }, 'json');
+
+            $.get("https://pokeapi.co/api/v2/pokemon/" + ID + "/", function(res) {
+                var weightString = "<h3>Weight</h3>";
+                weightString += res.weight;
+                $('.weight').html(weightString);
+            }, 'json');
+
+
+            })
+
+
+        })
+
+
+    </script>
+
+  </head>
+  <body>
+      <div class="container">
+          <div class="pokemon"></div>
+          <div class="pokedex">
+              <div class="name"></div>
+              <div class="picture"></div>
+              <div class="types"></div>
+              <div class="height"></div>
+              <div class="weight"></div>
+          </div>
+      </div>
+
+  </body>
+</html>
